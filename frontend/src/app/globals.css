@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #f8fafc;
+  --color-overlay: #00000033;
+
+  --color-card-progress: #f5d565;
+  --color-card-completed: #a0ecb1;
+  --color-card-wontdo: #f7d4d3;
+  --color-card-todo: #e3e8ef;
+
+  --color-badge-progress: #e9a23b;
+  --color-badge-completed: #32d657;
+  --color-badge-wontdo: #dd524c;
+  --color-badge-addtask: #e9a23b;
+
+  --color-btn-add: #f5e8d5;
+  --color-btn-delete: #97a3b6;
+  --color-btn-save: #3662e3;
+
+  --color-border: #97a3b6;
+  --color-input-border: #97a3b6;
+  --color-icon-input: #e3e8ef;
+  --color-icon-selected: #f5d565;
+  --color-label: #97a3b6;
+  --color-input-placeholder: #97a3b6;
+  --color-input-focus: #3662e3;
+
+  --color-text-white: #ffffff;
+  --color-text-muted: #97a3b6;
+
+  --text-title: 2.5rem;
+  --text-description: 1rem;
+  --text-task-title: 1.25rem;
+  --text-task-button: 1rem;
+  --text-button-text: 0.875rem;
+  --text-label-size: 0.75rem;
+}
+
+.input {
+  @apply border-2 border-input-border rounded-lg p-2 placeholder:text-input-placeholder focus:outline-none focus:border-input-focus transition duration-200;
+}
+
+.btn {
+  @apply px-6 py-1 hover:brightness-90 transition duration-300 cursor-pointer text-white text-button-text rounded-full flex gap-2 items-center;
+}

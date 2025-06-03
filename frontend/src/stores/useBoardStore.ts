@@ -1,0 +1,28 @@
+import { mockBoard } from "@/db/mockBoard";
+import { BoardStore } from "@/types/board.store.types";
+import { create } from "zustand";
+
+export const useBoardStore = create<BoardStore>()((set) => ({
+  tasks: mockBoard.tasks,
+
+  addTask: () => {
+    set((state) => ({
+      tasks: [
+        ...state.tasks,
+        { id: `${Date.now()}`, name: "Task", icon: "⏰", status: "To Do" },
+      ],
+    }));
+  },
+
+  updateTask: (updatedTask) => {
+    set((state) => ({
+      tasks: state.tasks.map((task) =>
+        task.id === updatedTask.id ? updatedTask : task
+      ),
+    }));
+  },
+
+  deleteTask: (id) => {
+    set((state) => ({ tasks: state.tasks.filter((task) => task.id !== id) }));
+  },
+}));
