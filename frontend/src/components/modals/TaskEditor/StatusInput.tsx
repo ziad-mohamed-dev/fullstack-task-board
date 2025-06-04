@@ -35,7 +35,7 @@ const StatusInput = ({ status, isSelected, onChange }: StatusInputProps) => {
           checked={isSelected}
           value={status}
         />
-        <div className="flex items-center gap-2 w-2/3">
+        <div className="flex items-center gap-2">
           {/* STATUS BADGE */}
           <div
             className={`${
@@ -50,7 +50,7 @@ const StatusInput = ({ status, isSelected, onChange }: StatusInputProps) => {
           >
             <Image src={statusIcon} alt="Time atack" width={20} height={20} />
           </div>
-          <p className="text-nowrap overflow-hidden text-ellipsis">{status}</p>
+          <p className="break-all line-clamp-1">{status}</p>
         </div>
         <div className="bg-input-focus rounded-full p-0.25 mr-2 peer-checked:block hidden shrink-0">
           <Image src={done} width={15} height={15} alt="selected" />

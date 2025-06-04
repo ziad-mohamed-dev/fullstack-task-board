@@ -9,7 +9,7 @@ interface TaskCardProps {
 }
 
 const TaskCard = ({ task }: TaskCardProps) => {
-  const { openModal } = useModalStore();
+  const { openModal, data } = useModalStore();
 
   const statusIcon =
     task.status === "Completed"
@@ -22,7 +22,7 @@ const TaskCard = ({ task }: TaskCardProps) => {
 
   return (
     <button
-      onClick={() => openModal("task", task)}
+      onClick={() => openModal({ type: "task", data: task })}
       className={`${
         task.status === "Completed"
           ? "bg-card-completed"
@@ -31,7 +31,10 @@ const TaskCard = ({ task }: TaskCardProps) => {
           : task.status === "Won't Do"
           ? "bg-card-wontdo"
           : "bg-card-todo"
-      } p-4 rounded-2xl text-start w-full flex justify-between items-center cursor-pointer hover:scale-105 transition duration-300`}
+      } ${
+        data?.id === task.id &&
+        "scale-105 ring-2 ring-input-focus ring-offset-3"
+      } p-4 rounded-2xl text-start w-full flex justify-between items-center cursor-pointer hover:scale-105 transition-transform duration-300`}
     >
       {/* TASK DETAILS */}
       <div className="flex gap-4">
@@ -39,7 +42,9 @@ const TaskCard = ({ task }: TaskCardProps) => {
           {task.icon}
         </div>
         <div className="flex flex-col justify-center">
-          <h2 className="font-semibold text-task-title">{task.name}</h2>
+          <h2 className="font-semibold text-task-title break-all">
+            {task.name}
+          </h2>
           {task.description && (
             <p className="w-3/4 font-light">{task.description}</p>
           )}

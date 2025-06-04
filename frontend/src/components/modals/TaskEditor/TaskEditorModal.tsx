@@ -8,12 +8,13 @@ import { done, trash } from "@/constants";
 import { useModalStore } from "@/stores/useModalStore";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { useBoardStore } from "@/stores/useBoardStore";
+import Input from "@/components/ui/Input";
 
 const TaskEditorModal = () => {
   const { data, closeModal } = useModalStore();
   const { deleteTask, updateTask } = useBoardStore();
   const [TaskData, setTaskData] = useState<Task>(
-    data || {
+    (data as Task) || {
       id: "",
       name: "",
       description: "",
@@ -56,22 +57,16 @@ const TaskEditorModal = () => {
       onSubmit={handleSubmit}
     >
       {/* Inputs */}
-      <div>
+      <div className="space-y-5">
         {/* Task Name Input */}
-        <div className="flex flex-col gap-1">
-          <label htmlFor="task-name" className="text-label-size text-label">
-            Task name
-          </label>
-          <input
-            type="text"
-            id="task-name"
-            className="input"
-            placeholder="Enter task name"
-            value={TaskData.name}
-            name="name"
-            onChange={handleChange}
-          />
-        </div>
+        <Input
+          label="Task name"
+          placeholder="Enter task name"
+          value={TaskData.name}
+          name="name"
+          onChange={handleChange}
+          errorMsg={!TaskData.name.trim() ? "task name is required" : ""}
+        />
         {/* Task Description Input */}
         <div className="flex flex-col gap-1">
           <label

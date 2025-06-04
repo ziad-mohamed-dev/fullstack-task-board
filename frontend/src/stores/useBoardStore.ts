@@ -1,9 +1,12 @@
-import { mockBoard } from "@/db/mockBoard";
+import { mockBoard, mockTasks } from "@/db/mockBoard";
 import { BoardStore } from "@/types/board.store.types";
 import { create } from "zustand";
 
 export const useBoardStore = create<BoardStore>()((set) => ({
-  tasks: mockBoard.tasks,
+  board: mockBoard,
+  tasks: mockTasks,
+
+  updateBoard: (updateBoard) => set({ board: updateBoard }),
 
   addTask: () => {
     set((state) => ({

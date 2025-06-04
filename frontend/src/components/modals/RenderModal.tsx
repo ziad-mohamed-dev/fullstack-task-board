@@ -2,7 +2,7 @@
 import { useModalStore } from "@/stores/useModalStore";
 import { MouseEvent, ReactNode, useEffect, useRef } from "react";
 import TaskEditorModal from "./TaskEditor/TaskEditorModal";
-import BoarderEditorModal from "./BoarderEditorModal";
+import BoarderEditorModal from "./BoarderEditor/BoarderEditorModal";
 import Image from "next/image";
 import { close_ring_modal } from "@/constants";
 
