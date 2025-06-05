@@ -19,7 +19,7 @@ exports.createBoard = async (req, res) => {
     const board = await Board.create({
       name,
       description,
-      tasks: taskIds,
+      tasks,
       user: req.user.userId
     });
     
