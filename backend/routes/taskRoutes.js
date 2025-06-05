@@ -17,7 +17,7 @@ const { createTask } = require('../controllers/taskController');
 
 
 router.get('/',    protect, getTasks);
-router.post('/', protect, validateBody(taskSchema), createTask);
+router.post('/', protect, validateBody(createTaskSchema), createTask);
 router.put('/:id', protect, validateBody(taskSchema), updateTask);
 router.delete('/:id', protect, deleteTask);
 

@@ -19,3 +19,7 @@ exports.taskSchema = Joi.object({
   }),
   icon: Joi.string().min(1).max(50).required()
 });
+
+exports.createTaskSchema = Joi.object({
+  boardId: Joi.string().required()
+});
