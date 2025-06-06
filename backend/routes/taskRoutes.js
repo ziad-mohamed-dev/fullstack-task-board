@@ -4,7 +4,7 @@ const router = express.Router();
 const { protect } = require("../middleware/authMiddleware");
 
 const { validateBody } = require("../middleware/validate");
-const { taskSchema, createTaskSchema } = require("../validation/schemas");
+const { taskSchema, createTaskSchema, updateTaskSchema } = require("../validation/schemas");
 
 const {
   getTasks,
@@ -16,7 +16,7 @@ const { createTask } = require("../controllers/taskController");
 
 router.get("/", protect, getTasks);
 router.post("/", protect, validateBody(createTaskSchema), createTask);
-router.put("/:id", protect, validateBody(taskSchema), updateTask);
+router.put("/:id", protect, validateBody(updateTaskSchema), updateTask);
 router.delete("/:id", protect, deleteTask);
 
 module.exports = router;
