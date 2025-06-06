@@ -129,3 +129,7 @@ exports.signout = async (req, res) => {
   res.clearCookie("token");
   res.status(200).json({ message: "signed out" });
 };
+
+exports.verfiyToken = (req, res) => {
+  res.status(200).json({ user: req.user });
+}

@@ -10,6 +10,7 @@ exports.protect = (req, res, next) => {
     req.user = decoded;
     next();
   } catch (err) {
+    res.clearCookie('token');
     res.status(401).json({ error: 'Invalid token' });
   }
 };
