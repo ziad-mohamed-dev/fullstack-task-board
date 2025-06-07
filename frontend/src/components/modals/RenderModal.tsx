@@ -40,7 +40,8 @@ const RenderModal = () => {
       ModalTitle = "Task details";
       ModalContent = <TaskEditorModal />;
       break;
-    case "board":
+    case "create board":
+    case "edit board":
       ModalTitle = "Board details";
       ModalContent = <BoarderEditorModal />;
       break;

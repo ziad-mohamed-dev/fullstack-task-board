@@ -15,3 +15,5 @@ export const close_ring_modal = "/close_ring_duotone-1.svg";
 export const add_round = "/Add_round_duotone.svg";
 
 export const trash = "/Trash.svg";
+
+export const hero_image = "/Hero_img.png";

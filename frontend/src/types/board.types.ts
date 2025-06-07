@@ -1,15 +1,17 @@
 export type TaskStatus = "In Progress" | "Completed" | "Won't Do" | "To Do";
 
-export interface Task {
-  id: string;
+export interface TaskData {
+  _id: string;
   name: string;
   description?: string;
   icon: "👨‍💻" | "💬" | "☕" | "🏋️‍♀️" | "📚" | "⏰";
   status: TaskStatus;
+  board: BoardData["_id"];
 }
 
-export interface Board {
-  id: string;
+export interface BoardData {
+  _id: string;
   name: string;
   description: string;
+  tasks: TaskData[];
 }

@@ -1,6 +1,7 @@
 "use client";
 import Input from "@/components/ui/Input";
-import { signUp } from "@/utils/api";
+import { useAuth } from "@/stores/useAuth";
+import { signUp } from "@/utils/clientApi";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -14,6 +15,7 @@ interface FormData {
 
 const Signup = () => {
   const router = useRouter();
+  const { setAuth } = useAuth();
 
   const [signupData, setSignupData] = useState<FormData>({
     username: "",
@@ -77,7 +79,8 @@ const Signup = () => {
       setIsLoading(true);
       try {
         await signUp({ username, password });
-        router.push("/board/1");
+        setAuth(true);
+        router.replace("/boards");
       } catch (err) {
         if (axios.isAxiosError(err)) {
           if (err.response?.data?.error === "Username already exists") {
@@ -102,7 +105,7 @@ const Signup = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-white shadow-lg rounded-2xl p-6 space-y-5 w-full max-w-lg"
+      className="bg-white shadow-2xl rounded-2xl p-6 space-y-5 w-full max-w-lg"
     >
       <h1 className="text-center text-4xl">Sign up</h1>
       <Input

@@ -1,11 +1,11 @@
 "use client";
 import { close_ring, done_round, time_atack } from "@/constants";
 import { useModalStore } from "@/stores/useModalStore";
-import { Task } from "@/types/board.types";
+import { TaskData } from "@/types/board.types";
 import Image from "next/image";
 
 interface TaskCardProps {
-  task: Task;
+  task: TaskData;
 }
 
 const TaskCard = ({ task }: TaskCardProps) => {
@@ -32,7 +32,7 @@ const TaskCard = ({ task }: TaskCardProps) => {
           ? "bg-card-wontdo"
           : "bg-card-todo"
       } ${
-        data?.id === task.id &&
+        data?._id === task._id &&
         "scale-105 ring-2 ring-input-focus ring-offset-3"
       } p-4 rounded-2xl text-start w-full flex justify-between items-center cursor-pointer hover:scale-105 transition-transform duration-300`}
     >

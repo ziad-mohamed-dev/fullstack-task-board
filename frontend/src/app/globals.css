@@ -8,6 +8,7 @@
   --color-card-completed: #a0ecb1;
   --color-card-wontdo: #f7d4d3;
   --color-card-todo: #e3e8ef;
+  --color-card-board: #3662e3;
 
   --color-badge-progress: #e9a23b;
   --color-badge-completed: #32d657;
@@ -27,6 +28,7 @@
   --color-input-placeholder: #97a3b6;
   --color-input-focus: #3662e3;
 
+  --color-text-primary: #e9a23b;
   --color-text-white: #ffffff;
   --color-text-muted: #97a3b6;
   --color-text-error: #dd524c;
@@ -34,6 +36,7 @@
   --text-title: 2.5rem;
   --text-description: 1rem;
   --text-task-title: 1.25rem;
+  --text-board-title: 1.25rem;
   --text-task-button: 1rem;
   --text-button-text: 0.875rem;
   --text-label-size: 0.75rem;

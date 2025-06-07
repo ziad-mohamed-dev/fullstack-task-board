@@ -1,31 +1,49 @@
-import { mockBoard, mockTasks } from "@/db/mockBoard";
 import { BoardStore } from "@/types/board.store.types";
 import { create } from "zustand";
 
 export const useBoardStore = create<BoardStore>()((set) => ({
-  board: mockBoard,
-  tasks: mockTasks,
+  boards: [],
+  board: { _id: "", description: "", name: "", tasks: [] },
 
-  updateBoard: (updateBoard) => set({ board: updateBoard }),
-
-  addTask: () => {
+  // BOARDS METHODS
+  setBoards: (boards) => set({ boards }),
+  addBoard: (board) => set((state) => ({ boards: [...state.boards, board] })),
+  deleteBoard: (_id) =>
     set((state) => ({
-      tasks: [
-        ...state.tasks,
-        { id: `${Date.now()}`, name: "Task", icon: "⏰", status: "To Do" },
-      ],
-    }));
-  },
+      boards: state.boards.filter((board) => board._id !== _id),
+    })),
 
-  updateTask: (updatedTask) => {
+  // BOARD METHODS
+  setBoard: (board) => set({ board }),
+  editBoard: (board) =>
     set((state) => ({
-      tasks: state.tasks.map((task) =>
-        task.id === updatedTask.id ? updatedTask : task
-      ),
-    }));
-  },
+      board: {
+        ...state.board,
+        name: board.name,
+        description: board.description,
+      },
+    })),
+    
 
-  deleteTask: (id) => {
-    set((state) => ({ tasks: state.tasks.filter((task) => task.id !== id) }));
-  },
+  // TASK METHODS
+  addTask: (task) =>
+    set((state) => ({
+      board: { ...state.board, tasks: [...state.board.tasks, task] },
+    })),
+  editTask: (updatedTask) =>
+    set((state) => ({
+      board: {
+        ...state.board,
+        tasks: state.board.tasks.map((task) =>
+          task._id === updatedTask._id ? updatedTask : task
+        ),
+      },
+    })),
+  removeTask: (_id) =>
+    set((state) => ({
+      board: {
+        ...state.board,
+        tasks: state.board.tasks.filter((task) => task._id !== _id),
+      },
+    })),
 }));

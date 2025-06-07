@@ -1,6 +1,6 @@
 "use client";
 
-import { Task, TaskStatus } from "@/types/board.types";
+import { TaskData, TaskStatus } from "@/types/board.types";
 import IconInput from "./IconInput";
 import StatusInput from "./StatusInput";
 import Image from "next/image";
@@ -9,12 +9,14 @@ import { useModalStore } from "@/stores/useModalStore";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { useBoardStore } from "@/stores/useBoardStore";
 import Input from "@/components/ui/Input";
+import { deleteTask, updateTask } from "@/utils/clientApi";
+import Loader from "@/components/ui/Loader";
 
 const TaskEditorModal = () => {
   const { data, closeModal } = useModalStore();
-  const { deleteTask, updateTask } = useBoardStore();
-  const [TaskData, setTaskData] = useState<Task>(
-    (data as Task) || {
+  const { removeTask, editTask } = useBoardStore();
+  const [TaskData, setTaskData] = useState<TaskData>(
+    (data as TaskData) || {
       id: "",
       name: "",
       description: "",
@@ -22,8 +24,10 @@ const TaskEditorModal = () => {
       status: "To Do",
     }
   );
+  const [isUpdateing, setIsUpdateing] = useState(false);
+  const [isDeleteing, setIsDeleteing] = useState(false);
 
-  const icons: Task["icon"][] = ["👨‍💻", "💬", "☕", "🏋️‍♀️", "📚", "⏰"];
+  const icons: TaskData["icon"][] = ["👨‍💻", "💬", "☕", "🏋️‍♀️", "📚", "⏰"];
   const status: Exclude<TaskStatus, "To Do">[] = [
     "In Progress",
     "Completed",
@@ -36,18 +40,30 @@ const TaskEditorModal = () => {
     setTaskData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const { icon, name, status } = TaskData;
     const isVaild = icon.trim() && name.trim() && status.trim();
     if (isVaild) {
-      updateTask(TaskData);
+      try {
+        setIsUpdateing(true);
+        await updateTask(TaskData);
+        editTask(TaskData);
+      } catch (err) {
+        console.log(err);
+      }
       closeModal();
     }
   };
 
-  const handleDelete = () => {
-    deleteTask(TaskData.id);
+  const handleDelete = async () => {
+    try {
+      setIsDeleteing(true);
+      await deleteTask(TaskData._id);
+      removeTask(TaskData._id);
+    } catch (err) {
+      console.log(err);
+    }
     closeModal();
   };
 
@@ -121,10 +137,18 @@ const TaskEditorModal = () => {
           onClick={handleDelete}
         >
           <span>Delete</span>
-          <Image src={trash} width={20} height={20} alt="trash" />
+          {isDeleteing ? (
+            <Loader />
+          ) : (
+            <Image src={trash} width={20} height={20} alt="trash" />
+          )}
         </button>
         <button type="submit" className="btn bg-btn-save">
-          <Image src={done} width={20} height={20} alt="trash" />
+          {isUpdateing ? (
+            <Loader />
+          ) : (
+            <Image src={done} width={20} height={20} alt="trash" />
+          )}
           <span>Save</span>
         </button>
       </div>

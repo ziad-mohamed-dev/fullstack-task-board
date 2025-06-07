@@ -1,12 +1,20 @@
-import { Board, Task } from "./board.types";
+import { BoardData, TaskData } from "./board.types";
 
 export interface BoardStore {
-  board: Board;
-  tasks: Task[];
+  boards: BoardData[];
+  board: BoardData;
 
-  updateBoard: (updatedBoard: Board) => void;
+  // BOARDS METHODS
+  addBoard: (board: BoardData) => void;
+  setBoards: (boards: BoardData[]) => void;
+  deleteBoard: (_id: BoardData["_id"]) => void;
 
-  addTask: () => void;
-  updateTask: (updatedTask: Task) => void;
-  deleteTask: (id: Task["id"]) => void;
+  // BOARD METHODS
+  setBoard: (board: BoardData) => void;
+  editBoard: (board: BoardData) => void;
+
+  // TASK METHODS
+  addTask: (task: TaskData) => void;
+  removeTask: (_id: TaskData["_id"]) => void;
+  editTask: (task: TaskData) => void;
 }

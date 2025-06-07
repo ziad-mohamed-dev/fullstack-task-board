@@ -1,6 +1,7 @@
 "use client";
 import Input from "@/components/ui/Input";
-import { signIn } from "@/utils/api";
+import { useAuth } from "@/stores/useAuth";
+import { signIn } from "@/utils/clientApi";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -13,6 +14,7 @@ interface FormData {
 
 const Signin = () => {
   const router = useRouter();
+  const { setAuth } = useAuth();
 
   const [signinData, setSigninData] = useState<FormData>({
     username: "",
@@ -43,24 +45,21 @@ const Signin = () => {
     let isVaild = true;
 
     // Username validation
-    if (username !== undefined) {
-      if (!username.trim()) {
-        newErrors.username = "username is required";
-        isVaild = false;
-      } else if (username.trim().length < 3) {
-        newErrors.username = "username must be at least 3 characters";
-        isVaild = false;
-      }
+    if (!username.trim()) {
+      newErrors.username = "username is required";
+      isVaild = false;
+    } else if (username.trim().length < 3) {
+      newErrors.username = "username must be at least 3 characters";
+      isVaild = false;
     }
+
     // password validation
-    if (password !== undefined) {
-      if (!password) {
-        newErrors.password = "password is required";
-        isVaild = false;
-      } else if (password.length < 6) {
-        newErrors.password = "pasword must be at least 6 characters";
-        isVaild = false;
-      }
+    if (!password) {
+      newErrors.password = "password is required";
+      isVaild = false;
+    } else if (password.length < 6) {
+      newErrors.password = "pasword must be at least 6 characters";
+      isVaild = false;
     }
 
     setErrors(newErrors);
@@ -75,7 +74,8 @@ const Signin = () => {
       setIsLoading(true);
       try {
         await signIn({ username, password });
-        router.push("board/1");
+        router.replace("/boards");
+        setAuth(true);
       } catch (err) {
         if (axios.isAxiosError(err)) {
           if (err.response?.data?.error === "Invalid credentials") {
@@ -97,7 +97,7 @@ const Signin = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-white shadow-lg rounded-2xl p-6 space-y-5 w-full max-w-lg"
+      className="bg-white shadow-2xl rounded-2xl p-6 space-y-5 w-full max-w-lg"
     >
       <h1 className="text-center text-4xl">Sign in</h1>
       <Input
@@ -110,6 +110,7 @@ const Signin = () => {
       />
       <Input
         label="Password"
+        type="password"
         placeholder="Enter password"
         onChange={handleChange}
         value={signinData.password}

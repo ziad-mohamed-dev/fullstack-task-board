@@ -1,11 +1,11 @@
 "use client";
 import { edit, logo } from "@/constants";
 import { useModalStore } from "@/stores/useModalStore";
-import { Board } from "@/types/board.types";
+import { BoardData } from "@/types/board.types";
 import Image from "next/image";
 
 interface BoardHeaderProps {
-  board: Board;
+  board: BoardData;
 }
 
 const BoardHeader = ({ board }: BoardHeaderProps) => {
@@ -19,7 +19,7 @@ const BoardHeader = ({ board }: BoardHeaderProps) => {
           {board.name}
         </h1>
         <button
-          onClick={() => openModal({ type: "board", data: board })}
+          onClick={() => openModal({ type: "edit board", data: board })}
           className="cursor-pointer hover:opacity-80 hover:scale-115 transition duration-200 shrink-0"
         >
           <Image src={edit} alt="Edit duotone" width={25} height={25} />

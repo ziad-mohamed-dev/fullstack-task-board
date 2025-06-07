@@ -1,18 +1,54 @@
 import Input from "@/components/ui/Input";
+import Loader from "@/components/ui/Loader";
 import { done } from "@/constants";
 import { useBoardStore } from "@/stores/useBoardStore";
 import { useModalStore } from "@/stores/useModalStore";
-import { Board } from "@/types/board.types";
+import { BoardData } from "@/types/board.types";
+import { createBoard, updateBoard } from "@/utils/clientApi";
 import Image from "next/image";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { ChangeEvent } from "react";
 
+interface FormData {
+  name: string;
+  description: string;
+}
+
 const BoardEditorModal = () => {
-  const { data, closeModal } = useModalStore();
-  const { updateBoard } = useBoardStore();
-  const [BoardData, setBoardData] = useState<Board>(
-    (data as Board) || { id: "", name: "", description: "" }
+  const { data, closeModal, type } = useModalStore();
+  const [BoardData, setBoardData] = useState<BoardData>(
+    (data as BoardData) || { id: "", name: "", description: "" }
   );
+  const [BoardErrors, setBoardErrors] = useState({ name: "", description: "" });
+  const [isSubmited, setIsSubmited] = useState(false);
+  const [isCreateingBoard, setIsCreateingBoard] = useState(false);
+  const { addBoard, editBoard } = useBoardStore();
+
+  // RealTime validation after the first submit
+  useEffect(() => {
+    if (isSubmited) {
+      const { name, description } = BoardData;
+      validateForm({ name, description });
+    }
+  }, [isSubmited, BoardData]);
+
+  const validateForm = ({ name, description }: FormData) => {
+    const newErrors = { name: "", description: "" };
+    let isVaild = true;
+
+    if (!name.trim()) {
+      newErrors.name = "board name is required";
+      isVaild = false;
+    }
+
+    if (!description.trim()) {
+      newErrors.description = "board name is required";
+      isVaild = false;
+    }
+
+    setBoardErrors(newErrors);
+    return isVaild;
+  };
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -20,12 +56,30 @@ const BoardEditorModal = () => {
     setBoardData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    setIsSubmited(true);
     const { name, description } = BoardData;
-    const isVaild = description.trim() && name.trim();
-    if (isVaild) {
-      updateBoard(BoardData);
+    if (validateForm({ name, description })) {
+      // Creating new board
+      if (type === "create board") {
+        try {
+          setIsCreateingBoard(true);
+          const newBoard = (await createBoard({ name, description })).data;
+          addBoard(newBoard);
+        } catch (err) {
+          console.log(err);
+        }
+      }
+      // Edit board
+      else if (type === "edit board") {
+        try {
+          const updatedBoard = (await updateBoard(BoardData)).data;
+          editBoard(updatedBoard);
+        } catch (err) {
+          console.log(err);
+        }
+      }
       closeModal();
     }
   };
@@ -44,7 +98,7 @@ const BoardEditorModal = () => {
           value={BoardData.name}
           name="name"
           onChange={handleChange}
-          errorMsg={!BoardData.name.trim() ? "board name is required" : ""}
+          errorMsg={BoardErrors.name}
         />
         {/* Board Description Input */}
         <div className="flex flex-col gap-1 relative">
@@ -62,9 +116,9 @@ const BoardEditorModal = () => {
             name="description"
             onChange={handleChange}
           />
-          {!BoardData.description.trim() && (
+          {BoardErrors.description && (
             <p className="text-sm text-text-error absolute -bottom-4.5">
-              description is required
+              {BoardErrors.description}
             </p>
           )}
         </div>
@@ -72,8 +126,16 @@ const BoardEditorModal = () => {
       {/* Form Buttons */}
       <div className="flex justify-end py-2">
         <button type="submit" className="btn bg-btn-save">
-          <Image src={done} width={20} height={20} alt="trash" />
-          <span>Save</span>
+          {isCreateingBoard ? (
+            <Loader />
+          ) : (
+            <Image src={done} width={20} height={20} alt="trash" />
+          )}
+          <span>
+            {type === "edit board"
+              ? "Save"
+              : type === "create board" && "Create"}
+          </span>
         </button>
       </div>
     </form>

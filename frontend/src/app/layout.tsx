@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import "./globals.css";
-import RenderModal from "@/components/modals/RenderModal";
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -22,7 +21,6 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${outfit.className} antialiased bg-background`}>
         {children}
-        <RenderModal />
       </body>
     </html>
   );
