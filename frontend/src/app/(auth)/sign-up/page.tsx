@@ -29,6 +29,8 @@ const Signup = () => {
     confirmPassword: "",
   });
 
+  const [serverError, setServerError] = useState<string>("");
+
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
@@ -37,6 +39,7 @@ const Signup = () => {
   useEffect(() => {
     if (isSubmitted) {
       validateForm(signupData);
+      setServerError("");
     }
   }, [isSubmitted, signupData]);
 
@@ -88,6 +91,8 @@ const Signup = () => {
               ...prev,
               username: "username already exists",
             }));
+          } else {
+            setServerError("something went wrong please try again later");
           }
         } else {
           console.error("An unexpected error occurred", err);
@@ -135,6 +140,7 @@ const Signup = () => {
         type="password"
       />
       <div className="flex flex-col items-center gap-2">
+        {serverError && <p className="text-sm text-red-500">{serverError}</p>}
         <div>
           Already have an account?{" "}
           <Link

@@ -26,7 +26,7 @@ const Signin = () => {
     password: "",
   });
 
-  const [invalidCredentials, setInvalidCredentials] = useState(false);
+  const [serverError, setServerError] = useState<string>("");
 
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -36,7 +36,7 @@ const Signin = () => {
   useEffect(() => {
     if (isSubmitted) {
       validateForm(signinData);
-      setInvalidCredentials(false);
+      setServerError("");
     }
   }, [isSubmitted, signinData]);
 
@@ -79,7 +79,9 @@ const Signin = () => {
       } catch (err) {
         if (axios.isAxiosError(err)) {
           if (err.response?.data?.error === "Invalid credentials") {
-            setInvalidCredentials(true);
+            setServerError("Invalid credentials");
+          } else {
+            setServerError("Something went wrong please try again later");
           }
         } else {
           console.error("An unexpected error occurred", err);
@@ -118,9 +120,7 @@ const Signin = () => {
         errorMsg={errors.password}
       />
       <div className="flex flex-col items-center gap-2">
-        {invalidCredentials && (
-          <p className="text-sm text-red-500">Invalid credentials</p>
-        )}
+        {serverError && <p className="text-sm text-red-500">{serverError}</p>}
         <div>
           Don&apos;t have an account?{" "}
           <Link
