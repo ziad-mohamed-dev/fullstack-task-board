@@ -12,7 +12,7 @@ const app = express();
 app.use(cookieParser());
 
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' ? process.env.VERCEL_URL : 'http://localhost:3000',
+  origin: process.env.NODE_ENV === 'production' ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : 'http://localhost:3000',
   credentials: true
 }));
 
@@ -24,9 +24,6 @@ app.use('/api/tasks', taskRoutes);
 
 //test route
 app.get("/api/ping", (req, res) => {
-  console.log(process.env.NODE_ENV);
-  console.log(process.env.VERCEL_URL);
-  console.log(process.env.VERCEL_PROJECT_PRODUCTION_URL);
   res.status(200).json({ message: "pong" });
 });
 
