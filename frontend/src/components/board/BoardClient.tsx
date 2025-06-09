@@ -12,7 +12,6 @@ interface BoardClientProps {
 const BoardClient = ({ initBoard }: BoardClientProps) => {
   const { setBoard, board } = useBoardStore();
 
-  console.log(board);
   useEffect(() => {
     setBoard(initBoard);
     return () => {
