@@ -4,7 +4,6 @@ import TasksContainer from "../tasks/TasksContainer";
 import BoardHeader from "./BoardHeader";
 import { useBoardStore } from "@/stores/useBoardStore";
 import { useEffect } from "react";
-import { useParams } from "next/navigation";
 
 interface BoardClientProps {
   initBoard: BoardData;
@@ -12,13 +11,14 @@ interface BoardClientProps {
 
 const BoardClient = ({ initBoard }: BoardClientProps) => {
   const { setBoard, board } = useBoardStore();
-  const { id } = useParams();
 
+  console.log(board);
   useEffect(() => {
     setBoard(initBoard);
+    return () => {
+      setBoard({ _id: "", description: "", name: "", tasks: [] });
+    };
   }, [initBoard, setBoard]);
-
-  if (board._id !== id) return null;
 
   return (
     <>
