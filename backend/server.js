@@ -26,6 +26,7 @@ app.use('/api/tasks', taskRoutes);
 app.get("/api/ping", (req, res) => {
   console.log(process.env.NODE_ENV);
   console.log(process.env.VERCEL_URL);
+  console.log(process.env.VERCEL_PROJECT_PRODUCTION_URL);
   res.status(200).json({ message: "pong" });
 });
 
