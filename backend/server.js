@@ -23,7 +23,9 @@ app.use('/api/boards', boardRoutes);
 app.use('/api/tasks', taskRoutes);
 
 //test route
-app.get("/ping", (req, res) => {
+app.get("/api/ping", (req, res) => {
+  console.log(process.env.NODE_ENV);
+  console.log(process.env.VERCEL_URL);
   res.status(200).json({ message: "pong" });
 });
 
