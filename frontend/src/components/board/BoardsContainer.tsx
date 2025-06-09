@@ -3,20 +3,20 @@ import { useBoardStore } from "@/stores/useBoardStore";
 import AddBoardBtn from "./AddBoardBtn";
 import BoardCard from "./BoardCard";
 import { useEffect, useState } from "react";
-import { BoardData } from "@/types/board.types";
+import { getAllBoards } from "@/utils/clientApi";
 
-interface BoardsContainerProps {
-  initialBoards: BoardData[];
-}
-
-const BoardsContainer = ({ initialBoards }: BoardsContainerProps) => {
+const BoardsContainer = () => {
   const { setBoards, boards } = useBoardStore();
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
-    setBoards(initialBoards);
-    setHydrated(true);
-  }, [initialBoards, setBoards]);
+    const fetchAllBoards = async () => {
+      const boards = (await getAllBoards()).data.data;
+      setBoards(boards);
+      setHydrated(true);
+    };
+    fetchAllBoards();
+  }, [setBoards]);
 
   if (!hydrated) return null;
 

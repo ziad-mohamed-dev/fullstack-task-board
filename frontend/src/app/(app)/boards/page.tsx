@@ -1,14 +1,14 @@
 import BoardsContainer from "@/components/board/BoardsContainer";
-import { BoardData } from "@/types/board.types";
-import { getAllBoards } from "@/utils/serverApi";
+import BoardsContainerSkeleton from "@/components/board/BoardsContainerSkeleton";
+import { Suspense } from "react";
 
-const Boards = async () => {
-  const boards: BoardData[] = (await getAllBoards()).data.data;
-
+const Boards = () => {
   return (
     <div className="space-y-4">
       <h1 className="text-title text-center">Your Boards</h1>
-      <BoardsContainer initialBoards={boards} />
+      <Suspense fallback={<BoardsContainerSkeleton />}>
+        <BoardsContainer />
+      </Suspense>
     </div>
   );
 };

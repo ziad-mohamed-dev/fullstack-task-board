@@ -12,6 +12,8 @@ const signIn = async ({ username, password }: SignInData) =>
 const signOut = async () => await AxiosInstant.post("/auth/sign-out");
 
 // BOARDS
+const getAllBoards = async () => await AxiosInstant.get("/boards");
+
 const createBoard = async ({ name, description }: BoardDataApi) =>
   await AxiosInstant.post("/boards", { name, description });
 
@@ -49,4 +51,5 @@ export {
   createTask,
   updateTask,
   deleteTask,
+  getAllBoards,
 };

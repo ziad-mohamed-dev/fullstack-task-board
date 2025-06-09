@@ -14,10 +14,7 @@ AxiosInstant.interceptors.request.use(async (config) => {
 // AUTH
 const verifyToken = async () => await AxiosInstant.get("/auth/verify");
 
-// BOARDS
-const getAllBoards = async () => await AxiosInstant.get("/boards");
-
 const getBoard = async (_id: string) =>
   await AxiosInstant.get(`/boards/${_id}`);
 
-export { verifyToken , getAllBoards, getBoard };
+export { verifyToken, getBoard };
