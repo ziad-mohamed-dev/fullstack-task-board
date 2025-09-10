@@ -1,11 +1,5 @@
 import type { Metadata } from "next";
-import { Outfit } from "next/font/google";
 import "./globals.css";
-
-const outfit = Outfit({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600"], // Light, Regular, Medium, Semibold
-});
 
 export const metadata: Metadata = {
   title: "Task Board App",
@@ -19,7 +13,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${outfit.className} antialiased bg-background`}>
+      <body className="antialiased bg-background font-sans">
         {children}
       </body>
     </html>

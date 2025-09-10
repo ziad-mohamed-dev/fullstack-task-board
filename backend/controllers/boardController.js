@@ -8,21 +8,21 @@ exports.createBoard = async (req, res) => {
     const defaultTasks = [
       { name: 'Task in Progress', status: 'In Progress', icon: '⏰' },
       { name: 'Task Completed', status: 'Completed', icon: '✅' },
-      { name: 'Task Won’t Do', status: "Won't Do", icon: '❌' },
+      { name: 'Task Won’t Do', status: 'Won\'t Do', icon: '❌' },
       { name: 'Task To Do', status: 'To Do', icon: '📋' }
     ];
-    
+
     const tasks = await Task.insertMany(defaultTasks);
     const taskIds = tasks.map(t => t._id);
 
-    
+
     const board = await Board.create({
       name,
       description,
       tasks,
       user: req.user.userId
     });
-    
+
     await Task.updateMany({ _id: { $in: taskIds } }, { board: board._id });
 
     res.status(201).json(board);

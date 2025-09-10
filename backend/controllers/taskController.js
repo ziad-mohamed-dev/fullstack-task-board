@@ -14,9 +14,9 @@ exports.getTasks = async (req, res) => {
       { description: new RegExp(search, 'i') }
     ];
 
-    
+
     if (req.user) {
-      
+
       const boards = await Board.find({ user: req.user.userId }).select('_id');
       const boardIds = boards.map(b => b._id);
       filter.board = { $in: boardIds };
@@ -33,11 +33,11 @@ exports.getTasks = async (req, res) => {
 exports.createTask = async (req, res) => {
   try {
     const { boardId } = req.body;
-   
+
     const board = await Board.findOne({ _id: boardId, user: req.user.userId });
     if (!board) return res.status(404).json({ error: 'Board not found or unauthorized' });
 
-    
+
     const task = await Task.create({
       name: 'New Task',
       description: '',
@@ -46,7 +46,7 @@ exports.createTask = async (req, res) => {
       board: board._id
     });
 
-    
+
     board.tasks.push(task._id);
     await board.save();
 

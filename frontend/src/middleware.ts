@@ -4,15 +4,15 @@ import type { NextRequest } from "next/server";
 import { verifyToken } from "./utils/serverApi";
 
 const guestOnlyRoutes = ["/sign-in", "/sign-up"];
-const protuctedRoutes = ["/boards"];
+const protectedRoutes = ["/boards"];
 
 const isGuestOnlyRoute = (pathname: string) => {
   return guestOnlyRoutes.some((guestRoute) => pathname.startsWith(guestRoute));
 };
 
-const isProtuctedRoute = (pathname: string) => {
-  return protuctedRoutes.some((protuctedRoute) =>
-    pathname.startsWith(protuctedRoute)
+const isProtectedRoute = (pathname: string) => {
+  return protectedRoutes.some((protectedRoute) =>
+    pathname.startsWith(protectedRoute)
   );
 };
 
@@ -30,7 +30,7 @@ export const middleware = async (request: NextRequest) => {
     }
   }
 
-  if (isProtuctedRoute(pathname)) {
+  if (isProtectedRoute(pathname)) {
     if (token) {
       try {
         await verifyToken();
