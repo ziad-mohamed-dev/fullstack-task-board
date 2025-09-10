@@ -7,7 +7,6 @@ const userSchema = new mongoose.Schema({
   timestamps: true
 });
 
-// Index for faster username lookups
-userSchema.index({ username: 1 });
+// No need for manual index - unique: true already creates an index
 
 module.exports = mongoose.model('User', userSchema);

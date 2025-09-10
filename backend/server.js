@@ -15,8 +15,13 @@ const boardRoutes = require('./routes/boardRoutes');
 const taskRoutes = require('./routes/taskRoutes');
 const { errorHandler, notFound } = require('./middleware/errorHandler');
 const { apiLimiter } = require('./middleware/rateLimiter');
+const { sanitizeInput } = require('./middleware/sanitize');
+const { requestTracker } = require('./middleware/requestTracker');
 
 const app = express();
+
+// Request tracking middleware
+app.use(requestTracker);
 
 // Security middleware
 app.use(helmet({
@@ -37,6 +42,9 @@ app.use(cors({
 }));
 
 app.use(express.json());
+
+// Input sanitization middleware
+app.use(sanitizeInput);
 
 app.use('/api/auth', authRoutes);
 app.use('/api/boards', boardRoutes);
